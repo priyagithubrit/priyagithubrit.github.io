@@ -56,6 +56,7 @@
       white-space:pre;
       font-weight:700;
       margin-bottom:8px;
+      text-align:center;
     }
 
     .intro {
@@ -63,44 +64,15 @@
       margin-bottom:14px;
     }
 
-    .cmd {
-      color:var(--prompt);
-      font-weight:700;
-      margin-top:12px;
-    }
+    .cmd { color:var(--prompt); font-weight:700; margin-top:12px; }
+    .response { color:var(--muted); margin:8px 0 14px 18px; line-height:1.45; }
 
-    .response {
-      color:var(--muted);
-      margin:8px 0 14px 18px;
-      line-height:1.45;
-    }
-
-    a{ color:var(--link); text-decoration:none; }
-    a:hover{ text-decoration:underline; }
+    a{ color:var(--link); text-decoration:none; } a:hover{ text-decoration:underline; }
 
     /* input area */
-    #input-wrapper{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      padding:12px 16px;
-      border-top:1px solid rgba(255,255,255,0.03);
-      background:#070707;
-    }
-    #prompt{
-      color:var(--prompt);
-      font-weight:700;
-    }
-    #command{
-      flex:1;
-      background:transparent;
-      border:none;
-      outline:none;
-      color:var(--fg);
-      font-family:inherit;
-      font-size:15px;
-      padding:6px 8px;
-    }
+    #input-wrapper{ display:flex; align-items:center; gap:10px; padding:12px 16px; border-top:1px solid rgba(255,255,255,0.03); background:#070707; }
+    #prompt{ color:var(--prompt); font-weight:700; }
+    #command{ flex:1; background:transparent; border:none; outline:none; color:var(--fg); font-family:inherit; font-size:15px; padding:6px 8px; }
 
     /* responsive */
     @media (max-width:640px){
@@ -114,28 +86,26 @@
     <div id="output" aria-live="polite"></div>
 
     <div id="input-wrapper">
-      <div id="prompt">priya@portfolio:~$</div>
+      <div id="prompt">priya-singla@portfolio:~$</div>
       <input id="command" type="text" placeholder="Type a command and press Enter..." autocomplete="off" />
     </div>
   </div>
 
   <script>
-    // elements
     const output = document.getElementById('output');
     const cmdInput = document.getElementById('command');
 
-    // Correct boxed banner with exact full name
+    // Banner that clearly displays PRIYA SINGLA
     const banner = `
 +---------------------------------------------------------------+
 |                                                               |
-|                         PRIYA SINGLA                          |
+|                          PRIYA SINGLA                         |
 |                                                               |
 +---------------------------------------------------------------+
 `;
 
-    const PROMPT = 'priya@portfolio:~$';
+    const PROMPT = 'priya-singla@portfolio:~$';
 
-    // commands (case-insensitive)
     const commands = {
       help: `📌 Available Commands:
 about       - Personal info
@@ -157,7 +127,7 @@ Currently working as a Freelancer. I build clean, scalable web apps using Larave
 • Freelancer (04/2025 — Present)
   - Laravel + Vue.js projects; client-facing production apps
 • Software Developer — Anviam Solutions (03/2023 — 04/2025)
-  - Student management system, CSV exports, payment integrations
+  - Student management system, CSV exports, payment integration
 • Software Developer — iTech Vision, Mohali (03/2022 — 02/2023)
   - Backend systems, API integrations, authentication & RBAC`,
 
@@ -190,49 +160,38 @@ Soft: Communication, Problem Solving, Teamwork`,
   <i class="fab fa-linkedin"></i> LinkedIn: <a href="https://linkedin.com/in/priya-singla-69a20a244" target="_blank">linkedin.com/in/priya-singla-69a20a244</a>`
     };
 
-    // helper: safe escape (for echoing typed input)
     function escapeHtml(text){
-      const map = { '&':'&amp;','<':'&lt;','>':'&gt;'};
+      const map = { '&':'&amp;','<':'&lt;','>':'&gt;' };
       return String(text).replace(/[&<>]/g, ch => map[ch]);
     }
 
-    // print wrapper
     function printHtml(html, cls=''){
       const node = document.createElement('div');
       if(cls) node.className = cls;
       node.innerHTML = html;
       output.appendChild(node);
-      // keep scrolled to bottom
       output.parentElement.scrollTop = output.parentElement.scrollHeight;
     }
 
-    // show initial banner and intro
     function showBanner(){
       output.innerHTML = '';
       printHtml(`<pre class="banner">${banner}</pre>`);
       printHtml(`Welcome to PRIYA SINGLA's Terminal Portfolio! Type 'help' to see commands.`, 'response');
     }
 
-    // run command
     function runCommand(raw){
       const cmd = raw.trim();
       if(!cmd) return;
-      // special: clear resets banner
-      if(cmd.toLowerCase() === 'clear'){
-        showBanner();
-        return;
-      }
-      // echo the typed command
+      if(cmd.toLowerCase() === 'clear'){ showBanner(); return; }
       printHtml(`${PROMPT} ${escapeHtml(cmd)}`, 'cmd');
-      const key = cmd.toLowerCase();
-      const response = commands[key] || `❌ Command not found: ${escapeHtml(cmd)} — type 'help'.`;
+      const response = commands[cmd.toLowerCase()] || `❌ Command not found: ${escapeHtml(cmd)} — type 'help'.`;
       printHtml(response, 'response');
     }
 
-    // initial
+    // Init
     showBanner();
 
-    // handle Enter
+    // Input handling
     cmdInput.addEventListener('keydown', (e) => {
       if(e.key === 'Enter'){
         const v = cmdInput.value;
@@ -241,7 +200,7 @@ Soft: Communication, Problem Solving, Teamwork`,
       }
     });
 
-    // keep input focused when clicking anywhere
+    // keep input focused on click
     document.body.addEventListener('click', () => cmdInput.focus());
   </script>
 </body>
