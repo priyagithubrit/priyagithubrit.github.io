@@ -11,20 +11,20 @@
   <style>
     :root{
       --bg: #0d0d0d;
-      --panel: #000;
+      --panel: #040404;
       --fg: #00ff99;
       --link: #00ccff;
       --muted: #cfcfcf;
       --prompt: #ffcc00;
     }
-    *{box-sizing:border-box}
+    * { box-sizing: border-box; }
     body{
       margin:0;
       min-height:100vh;
       display:flex;
       align-items:center;
       justify-content:center;
-      background:var(--bg);
+      background: linear-gradient(180deg,#050505, #0d0d0d 60%);
       font-family: "Courier New", monospace;
       color:var(--fg);
       padding:20px;
@@ -35,9 +35,9 @@
       width:100%;
       max-width:980px;
       background:var(--panel);
-      border:2px solid rgba(0,255,153,0.12);
-      border-radius:8px;
-      box-shadow:0 8px 30px rgba(0,0,0,0.6);
+      border:2px solid rgba(0,255,153,0.08);
+      border-radius:10px;
+      box-shadow:0 12px 40px rgba(0,0,0,0.6);
       display:flex;
       flex-direction:column;
       overflow:hidden;
@@ -45,38 +45,58 @@
 
     /* output area */
     #output {
-      padding:22px;
+      padding:20px;
       white-space:pre-wrap;
       overflow-y:auto;
-      height:64vh;
+      height:66vh;
     }
 
+    /* Perfect boxed ASCII banner with exact name */
     .banner {
       color:var(--link);
       white-space:pre;
       font-weight:700;
-      margin-bottom:8px;
       text-align:center;
+      margin-bottom:8px;
+      letter-spacing: 1px;
     }
 
     .intro {
       color:var(--muted);
-      margin-bottom:14px;
+      margin-bottom:12px;
     }
 
     .cmd { color:var(--prompt); font-weight:700; margin-top:12px; }
     .response { color:var(--muted); margin:8px 0 14px 18px; line-height:1.45; }
 
-    a{ color:var(--link); text-decoration:none; } a:hover{ text-decoration:underline; }
+    a { color:var(--link); text-decoration:none; } a:hover{ text-decoration:underline; }
 
     /* input area */
-    #input-wrapper{ display:flex; align-items:center; gap:10px; padding:12px 16px; border-top:1px solid rgba(255,255,255,0.03); background:#070707; }
-    #prompt{ color:var(--prompt); font-weight:700; }
-    #command{ flex:1; background:transparent; border:none; outline:none; color:var(--fg); font-family:inherit; font-size:15px; padding:6px 8px; }
+    #input-wrapper {
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:12px 16px;
+      border-top:1px solid rgba(255,255,255,0.03);
+      background: #030303;
+    }
 
-    /* responsive */
+    #prompt { color:var(--prompt); font-weight:700; min-width:210px; }
+    #command {
+      flex:1;
+      background:transparent;
+      border:none;
+      outline:none;
+      color:var(--fg);
+      font-family:inherit;
+      font-size:15px;
+      padding:8px;
+    }
+
+    /* small responsive */
     @media (max-width:640px){
       #output{ height:60vh; padding:14px; }
+      #prompt{ min-width:120px; font-size:14px; }
       .banner{ font-size:13px; }
     }
   </style>
@@ -92,22 +112,25 @@
   </div>
 
   <script>
+    // Elements
     const output = document.getElementById('output');
     const cmdInput = document.getElementById('command');
 
-    // Banner that clearly displays PRIYA SINGLA
+    // === EXACT boxed banner showing PRIYA SINGLA ===
     const banner = `
-+---------------------------------------------------------------+
-|                                                               |
-|                          PRIYA SINGLA                         |
-|                                                               |
-+---------------------------------------------------------------+
++-----------------------------------------------------------------+
+|                                                                 |
+|                          PRIYA SINGLA                            |
+|                                                                 |
++-----------------------------------------------------------------+
 `;
 
     const PROMPT = 'priya-singla@portfolio:~$';
 
+    // Commands (case-insensitive)
     const commands = {
-      help: `📌 Available Commands:
+      help:
+`📌 Available Commands:
 about       - Personal info
 experience  - Work history
 education   - Educational background
@@ -119,11 +142,13 @@ clear       - Clear screen (resets banner)`,
 
       whoami: `PRIYA SINGLA`,
 
-      about: `🙋‍♀️ About
+      about:
+`🙋‍♀️ About
 Hi — I'm PRIYA SINGLA, a PHP / Laravel developer with 4 years of experience.
 Currently working as a Freelancer. I build clean, scalable web apps using Laravel, PHP, MySQL and Vue.js.`,
 
-      experience: `💼 Work Experience
+      experience:
+`💼 Work Experience
 • Freelancer (04/2025 — Present)
   - Laravel + Vue.js projects; client-facing production apps
 • Software Developer — Anviam Solutions (03/2023 — 04/2025)
@@ -131,76 +156,108 @@ Currently working as a Freelancer. I build clean, scalable web apps using Larave
 • Software Developer — iTech Vision, Mohali (03/2022 — 02/2023)
   - Backend systems, API integrations, authentication & RBAC`,
 
-      education: `🎓 Education
+      education:
+`🎓 Education
 • MCA — Asra Institute of Advanced Studies
 • BCA — Desh Bhagat College`,
 
-      projects: `🚀 Featured Projects
+      projects:
+`🚀 Featured Projects
 1) NIFTEM — Admissions & Student Management (Laravel + MySQL)
 2) USSD — SMS/USSD Money Transfer Platform (Laravel + MySQL)
 3) V-APPS — CMS (Laravel + Vue.js)
 4) Tryzeffy — Deals & Restaurant Finder (Laravel)
 5) WOWS Global — Investment Ecosystem (Laravel)
-6) Urawarrior — Mental Wellness Platform (Laravel)
-7) Laravel Admin Panel — Users / Products / Orders
-8) Shopify Order Sync Integration`,
+6) Urawarrior — Mental Wellness Platform (Laravel)`,
 
-      skills: `🛠️ Skills
+      skills:
+`🛠️ Skills
 Backend: PHP, Laravel, CodeIgniter
 Frontend: HTML, CSS, JavaScript, Vue.js
-DB & Cache: MySQL, Redis
+DB: MySQL, Redis
 APIs: REST, Shopify
 Tools: Git, Jira
 Soft: Communication, Problem Solving, Teamwork`,
 
-      contact: `📧 Contact
+      contact:
+`📧 Contact
   <i class="fas fa-envelope"></i> Email: <a href="mailto:singlap047@gmail.com">singlap047@gmail.com</a>
   <i class="fas fa-phone"></i> Phone: <a href="tel:+919877709698">+91 98777-09698</a>
   <i class="fab fa-github"></i> GitHub: <a href="https://github.com/priyagithubrit" target="_blank">github.com/priyagithubrit</a>
   <i class="fab fa-linkedin"></i> LinkedIn: <a href="https://linkedin.com/in/priya-singla-69a20a244" target="_blank">linkedin.com/in/priya-singla-69a20a244</a>`
     };
 
-    function escapeHtml(text){
+    // history for arrow up/down
+    const history = [];
+    let historyIndex = -1;
+
+    // safe echo (escape)
+    function escapeHtml(text) {
       const map = { '&':'&amp;','<':'&lt;','>':'&gt;' };
       return String(text).replace(/[&<>]/g, ch => map[ch]);
     }
 
-    function printHtml(html, cls=''){
+    function printHtml(html, cls='') {
       const node = document.createElement('div');
-      if(cls) node.className = cls;
+      if (cls) node.className = cls;
       node.innerHTML = html;
       output.appendChild(node);
+      // scroll to bottom
       output.parentElement.scrollTop = output.parentElement.scrollHeight;
     }
 
-    function showBanner(){
+    function showBanner() {
       output.innerHTML = '';
       printHtml(`<pre class="banner">${banner}</pre>`);
       printHtml(`Welcome to PRIYA SINGLA's Terminal Portfolio! Type 'help' to see commands.`, 'response');
     }
 
-    function runCommand(raw){
-      const cmd = raw.trim();
-      if(!cmd) return;
-      if(cmd.toLowerCase() === 'clear'){ showBanner(); return; }
+    function runCommand(raw) {
+      const cmd = String(raw || '').trim();
+      if (!cmd) return;
+
+      // add to history
+      history.push(cmd);
+      historyIndex = history.length;
+
+      // clear special
+      if (cmd.toLowerCase() === 'clear') {
+        showBanner();
+        return;
+      }
+
+      // echo typed command
       printHtml(`${PROMPT} ${escapeHtml(cmd)}`, 'cmd');
-      const response = commands[cmd.toLowerCase()] || `❌ Command not found: ${escapeHtml(cmd)} — type 'help'.`;
-      printHtml(response, 'response');
+
+      const out = commands[cmd.toLowerCase()] || `❌ Command not found: ${escapeHtml(cmd)} — type 'help'.`;
+      printHtml(out, 'response');
     }
 
-    // Init
+    // initial banner
     showBanner();
 
-    // Input handling
+    // Enter handling
     cmdInput.addEventListener('keydown', (e) => {
-      if(e.key === 'Enter'){
+      if (e.key === 'Enter') {
         const v = cmdInput.value;
         cmdInput.value = '';
         runCommand(v);
+      } else if (e.key === 'ArrowUp') {
+        // previous
+        if (history.length === 0) return;
+        historyIndex = Math.max(0, historyIndex - 1);
+        cmdInput.value = history[historyIndex] || '';
+        e.preventDefault();
+      } else if (e.key === 'ArrowDown') {
+        // next
+        if (history.length === 0) return;
+        historyIndex = Math.min(history.length, historyIndex + 1);
+        cmdInput.value = history[historyIndex] || '';
+        e.preventDefault();
       }
     });
 
-    // keep input focused on click
+    // keep input focused when clicking anywhere
     document.body.addEventListener('click', () => cmdInput.focus());
   </script>
 </body>
