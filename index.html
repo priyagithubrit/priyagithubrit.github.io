@@ -1,159 +1,248 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Priya Singla - Terminal Portfolio</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PRIYA SINGLA — Terminal Portfolio</title>
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
   <style>
-    body {
-      background: #0d0d0d;
-      color: #00ff99;
-      font-family: monospace;
-      padding: 20px;
+    :root{
+      --bg: #0d0d0d;
+      --panel: #000;
+      --fg: #00ff99;
+      --link: #00ccff;
+      --muted: #cfcfcf;
+      --prompt: #ffcc00;
     }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:var(--bg);
+      font-family: "Courier New", monospace;
+      color:var(--fg);
+      padding:20px;
+    }
+
+    /* Terminal panel */
     #terminal {
-      background: #000;
-      border: 2px solid #00ff99;
-      border-radius: 8px;
-      padding: 20px;
-      width: 90%;
-      max-width: 900px;
-      margin: auto;
-      min-height: 500px;
-      overflow-y: auto;
+      width:100%;
+      max-width:980px;
+      background:var(--panel);
+      border:2px solid rgba(0,255,153,0.12);
+      border-radius:8px;
+      box-shadow:0 8px 30px rgba(0,0,0,0.6);
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
     }
+
+    /* output area */
+    #output {
+      padding:22px;
+      white-space:pre-wrap;
+      overflow-y:auto;
+      height:64vh;
+    }
+
     .banner {
-      color: #00ffcc;
-      margin-bottom: 20px;
+      color:var(--link);
+      white-space:pre;
+      font-weight:700;
+      margin-bottom:8px;
     }
+
+    .intro {
+      color:var(--muted);
+      margin-bottom:14px;
+    }
+
     .cmd {
-      color: #fff;
+      color:var(--prompt);
+      font-weight:700;
+      margin-top:12px;
     }
+
     .response {
-      margin: 5px 0 15px 20px;
-      color: #00ff99;
+      color:var(--muted);
+      margin:8px 0 14px 18px;
+      line-height:1.45;
     }
-    #command {
-      width: 100%;
-      background: #000;
-      border: none;
-      border-top: 1px solid #00ff99;
-      color: #00ff99;
-      padding: 10px;
-      font-family: monospace;
-      font-size: 16px;
-      outline: none;
+
+    a{ color:var(--link); text-decoration:none; }
+    a:hover{ text-decoration:underline; }
+
+    /* input area */
+    #input-wrapper{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 16px;
+      border-top:1px solid rgba(255,255,255,0.03);
+      background:#070707;
     }
-    a { color: #00ccff; text-decoration: none; }
+    #prompt{
+      color:var(--prompt);
+      font-weight:700;
+    }
+    #command{
+      flex:1;
+      background:transparent;
+      border:none;
+      outline:none;
+      color:var(--fg);
+      font-family:inherit;
+      font-size:15px;
+      padding:6px 8px;
+    }
+
+    /* responsive */
+    @media (max-width:640px){
+      #output{ height:60vh; padding:14px; }
+      .banner{ font-size:13px; }
+    }
   </style>
 </head>
 <body>
-  <div id="terminal">
-    <div id="output"></div>
-    <input type="text" id="command" placeholder="Type a command and press Enter...">
+  <div id="terminal" role="application" aria-label="Terminal portfolio">
+    <div id="output" aria-live="polite"></div>
+
+    <div id="input-wrapper">
+      <div id="prompt">priya@portfolio:~$</div>
+      <input id="command" type="text" placeholder="Type a command and press Enter..." autocomplete="off" />
+    </div>
   </div>
 
   <script>
-    const output = document.getElementById("output");
-    const commandInput = document.getElementById("command");
+    // elements
+    const output = document.getElementById('output');
+    const cmdInput = document.getElementById('command');
 
-    // ✅ Correct ASCII Banner with your name
+    // Correct boxed banner with exact full name
     const banner = `
- ____       _             ____  _             _       
-|  _ \\ _ __(_)_   _ ___  / ___|| | ___   __ _| | __ _ 
-| |_) | '__| | | | / __| \\___ \\| |/ _ \\ / _\` | |/ _\` |
-|  __/| |  | | |_| \\__ \\  ___) | | (_) | (_| | | (_| |
-|_|   |_|  |_|\\__,_|___/ |____/|_|\\___/ \\__, |_|\\__,_|
-                                         |___/        
-
-Welcome to Priya Singla's Terminal Portfolio!  
-Type 'help' to see available commands.
++---------------------------------------------------------------+
+|                                                               |
+|                         PRIYA SINGLA                          |
+|                                                               |
++---------------------------------------------------------------+
 `;
 
+    const PROMPT = 'priya@portfolio:~$';
+
+    // commands (case-insensitive)
     const commands = {
       help: `📌 Available Commands:
-👉 <b>about</b> - Personal info  
-👉 <b>experience</b> - Work history  
-👉 <b>education</b> - Educational background  
-👉 <b>projects</b> - Featured projects  
-👉 <b>skills</b> - Technical expertise  
-👉 <b>contact</b> - Contact details  
-👉 <b>clear</b> - Clear screen`,
+about       - Personal info
+experience  - Work history
+education   - Educational background
+projects    - Featured projects
+skills      - Technical expertise
+contact     - Contact details (with icons)
+whoami      - Show full name
+clear       - Clear screen (resets banner)`,
 
-      about: `🙋‍♀️ <b>About Me</b>  
-Hi, I'm <b>Priya Singla</b> 👩‍💻  
-A passionate <b>PHP Developer</b> with 4 years of experience.  
-✨ Freelancer specializing in <b>Laravel, PHP, MySQL, Vue.js</b>.  
-I believe in writing clean code, building scalable apps, and solving problems effectively.`,
+      whoami: `PRIYA SINGLA`,
 
-      experience: `💼 <b>Work Experience</b>  
+      about: `🙋‍♀️ About
+Hi — I'm PRIYA SINGLA, a PHP / Laravel developer with 4 years of experience.
+Currently working as a Freelancer. I build clean, scalable web apps using Laravel, PHP, MySQL and Vue.js.`,
 
-🔹 <b>Freelancer (04/2025 - Present)</b>  
-&nbsp;&nbsp;🚀 Working on Laravel + Vue.js projects  
-&nbsp;&nbsp;🌍 Delivering scalable apps for clients worldwide  
+      experience: `💼 Work Experience
+• Freelancer (04/2025 — Present)
+  - Laravel + Vue.js projects; client-facing production apps
+• Software Developer — Anviam Solutions (03/2023 — 04/2025)
+  - Student management system, CSV exports, payment integrations
+• Software Developer — iTech Vision, Mohali (03/2022 — 02/2023)
+  - Backend systems, API integrations, authentication & RBAC`,
 
-🔹 <b>Software Developer - Anviam Solutions (03/2023 - 04/2025)</b>  
-&nbsp;&nbsp;📚 Built student management system  
-&nbsp;&nbsp;💳 Implemented CSV export & payments  
-&nbsp;&nbsp;🗄️ Managed Laravel ORM databases  
+      education: `🎓 Education
+• MCA — Asra Institute of Advanced Studies
+• BCA — Desh Bhagat College`,
 
-🔹 <b>Software Developer - iTech Vision, Mohali (03/2022 - 02/2023)</b>  
-&nbsp;&nbsp;⚡ Developed scalable backend systems  
-&nbsp;&nbsp;🔑 Implemented secure authentication  
-&nbsp;&nbsp;🔗 Integrated APIs (Food Delivery, Content)`,
+      projects: `🚀 Featured Projects
+1) NIFTEM — Admissions & Student Management (Laravel + MySQL)
+2) USSD — SMS/USSD Money Transfer Platform (Laravel + MySQL)
+3) V-APPS — CMS (Laravel + Vue.js)
+4) Tryzeffy — Deals & Restaurant Finder (Laravel)
+5) WOWS Global — Investment Ecosystem (Laravel)
+6) Urawarrior — Mental Wellness Platform (Laravel)
+7) Laravel Admin Panel — Users / Products / Orders
+8) Shopify Order Sync Integration`,
 
-      education: `🎓 <b>Education</b>  
-📘 MCA - Asra Institute of Advanced Studies, India  
-📗 BCA - Desh Bhagat College, India`,
+      skills: `🛠️ Skills
+Backend: PHP, Laravel, CodeIgniter
+Frontend: HTML, CSS, JavaScript, Vue.js
+DB & Cache: MySQL, Redis
+APIs: REST, Shopify
+Tools: Git, Jira
+Soft: Communication, Problem Solving, Teamwork`,
 
-      projects: `🚀 <b>Featured Projects</b>  
-1️⃣ NIFTEM - Admission & Student Management (Laravel + MySQL)  
-2️⃣ USSD Money Transfer Platform (Laravel + MySQL, SMS-based)  
-3️⃣ V-APPS - Full CMS (Laravel + Vue.js)  
-4️⃣ Tryzeffy - Deals & Restaurant Finder in Japan (Laravel)  
-5️⃣ WOWS Global - Investment Ecosystem (Laravel)  
-6️⃣ Urawarrior - Mental Wellness Platform (Laravel)  
-7️⃣ Laravel Admin Panel - User, Product, Order modules  
-8️⃣ Shopify Order Sync Integration`,
-
-      skills: `🛠️ <b>Skills</b>  
-💻 Backend: PHP, Laravel, CodeIgniter  
-🎨 Frontend: HTML, CSS, JavaScript, Vue.js  
-🗄️ Database: MySQL, Redis  
-🔗 APIs: REST APIs, Shopify API  
-⚙️ Tools: Git, Jira  
-🤝 Soft Skills: Communication, Problem Solving, Teamwork`,
-
-      contact: `📧 <b>Contact</b>  
-<i class="fas fa-envelope"></i> Email: <a href="mailto:singlap047@gmail.com">singlap047@gmail.com</a>  
-<i class="fas fa-phone"></i> Phone: <a href="tel:+919877709698">+91 98777-09698</a>  
-<i class="fab fa-github"></i> GitHub: <a href="https://github.com/priyagithubrit" target="_blank">github.com/priyagithubrit</a>  
-<i class="fab fa-linkedin"></i> LinkedIn: <a href="https://linkedin.com/in/priya-singla-69a20a244" target="_blank">linkedin.com/in/priya-singla</a>`,
-
-      clear: "clear"
+      contact: `📧 Contact
+  <i class="fas fa-envelope"></i> Email: <a href="mailto:singlap047@gmail.com">singlap047@gmail.com</a>
+  <i class="fas fa-phone"></i> Phone: <a href="tel:+919877709698">+91 98777-09698</a>
+  <i class="fab fa-github"></i> GitHub: <a href="https://github.com/priyagithubrit" target="_blank">github.com/priyagithubrit</a>
+  <i class="fab fa-linkedin"></i> LinkedIn: <a href="https://linkedin.com/in/priya-singla-69a20a244" target="_blank">linkedin.com/in/priya-singla-69a20a244</a>`
     };
 
-    function runCommand(cmd) {
-      if (cmd === "clear") {
-        output.innerHTML = "";
-        return;
-      }
-      let response = commands[cmd] || `❌ Command not found: ${cmd}`;
-      output.innerHTML += `<div class="cmd">priya@portfolio:~$ ${cmd}</div>`;
-      output.innerHTML += `<div class="response">${response}</div>`;
-      output.scrollTop = output.scrollHeight;
+    // helper: safe escape (for echoing typed input)
+    function escapeHtml(text){
+      const map = { '&':'&amp;','<':'&lt;','>':'&gt;'};
+      return String(text).replace(/[&<>]/g, ch => map[ch]);
     }
 
-    // Show banner on load
-    output.innerHTML = `<pre class="banner">${banner}</pre>`;
+    // print wrapper
+    function printHtml(html, cls=''){
+      const node = document.createElement('div');
+      if(cls) node.className = cls;
+      node.innerHTML = html;
+      output.appendChild(node);
+      // keep scrolled to bottom
+      output.parentElement.scrollTop = output.parentElement.scrollHeight;
+    }
 
-    commandInput.addEventListener("keydown", function(e) {
-      if (e.key === "Enter") {
-        let cmd = commandInput.value.trim();
-        runCommand(cmd);
-        commandInput.value = "";
+    // show initial banner and intro
+    function showBanner(){
+      output.innerHTML = '';
+      printHtml(`<pre class="banner">${banner}</pre>`);
+      printHtml(`Welcome to PRIYA SINGLA's Terminal Portfolio! Type 'help' to see commands.`, 'response');
+    }
+
+    // run command
+    function runCommand(raw){
+      const cmd = raw.trim();
+      if(!cmd) return;
+      // special: clear resets banner
+      if(cmd.toLowerCase() === 'clear'){
+        showBanner();
+        return;
+      }
+      // echo the typed command
+      printHtml(`${PROMPT} ${escapeHtml(cmd)}`, 'cmd');
+      const key = cmd.toLowerCase();
+      const response = commands[key] || `❌ Command not found: ${escapeHtml(cmd)} — type 'help'.`;
+      printHtml(response, 'response');
+    }
+
+    // initial
+    showBanner();
+
+    // handle Enter
+    cmdInput.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter'){
+        const v = cmdInput.value;
+        cmdInput.value = '';
+        runCommand(v);
       }
     });
+
+    // keep input focused when clicking anywhere
+    document.body.addEventListener('click', () => cmdInput.focus());
   </script>
 </body>
 </html>
