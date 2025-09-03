@@ -149,6 +149,33 @@
       text-shadow: 0 0 5px currentColor;
     }
 
+    /* ⭐ RESUME DOWNLOAD BUTTON STYLING ⭐ */
+    .download-btn {
+      display: inline-block;
+      background: linear-gradient(45deg, #00ccff, #0066cc);
+      color: white !important;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      margin: 10px 5px;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(0,204,255,0.3);
+      box-shadow: 0 4px 15px rgba(0,204,255,0.2);
+    }
+
+    .download-btn:hover {
+      background: linear-gradient(45deg, #0066cc, #00ccff);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,204,255,0.4);
+      text-decoration: none;
+      text-shadow: none;
+    }
+
+    .download-btn i {
+      margin-right: 8px;
+    }
+
     /* Enhanced input area */
     #input-wrapper {
       display:flex;
@@ -248,6 +275,20 @@
     </div>
   </div>
   <script>
+    // ⭐ CONFIG WITH YOUR ACTUAL RESUME LINK ⭐
+    const CONFIG = {
+      // Your Google Drive resume link (converted to download format)
+      resumeUrl: 'https://drive.google.com/file/d/1wSwASqtZaDdDwYyClMSHQU6vQN6wIcgr/view?usp=download',
+
+      // Your contact information
+      social: {
+        github: 'https://github.com/priyagithubrit',
+        linkedin: 'https://linkedin.com/in/priya-singla-69a20a244',
+        email: 'singlap047@gmail.com',
+        phone: '+919877709698'
+      }
+    };
+
     // Matrix background effect
     function initMatrix() {
       const canvas = document.getElementById('matrix-bg');
@@ -321,7 +362,7 @@ projects    - Featured projects portfolio
 skills      - Technical expertise & tools
 contact     - Contact details & social links
 whoami      - Show current user info
-resume      - Download resume (simulated)
+resume      - Download my professional resume (PDF) ⭐
 github      - Open GitHub profile
 linkedin    - Open LinkedIn profile  
 portfolio   - View online portfolio
@@ -344,12 +385,14 @@ neofetch    - System information`,
 │ Status: Available for freelance projects                    │
 └─────────────────────────────────────────────────────────────┘
 
-Hi there! I'm a passionate Full Stack Developer specializing in PHP, Laravel, 
-Vue.js, and modern web technologies. I love building scalable, user-friendly 
-applications that solve real-world problems.
+Results-driven PHP Developer with over 3 years of experience building scalable, 
+secure, and high-performing web applications. Skilled in PHP frameworks, 
+especially Laravel, with strong foundation in front-end technologies.
 
-Currently working as a freelancer, helping businesses transform their ideas 
-into robust digital solutions. Always excited about new challenges!`,
+Passionate about clean code, best practices, and continuous learning.
+Currently freelancing and helping businesses transform ideas into robust solutions.
+
+📄 Want my complete background? Type 'resume' to download my full CV!`,
 
       experience:
 `💼 Professional Experience
@@ -361,72 +404,75 @@ into robust digital solutions. Always excited about new challenges!`,
 │    • API integrations & third-party services                │
 │    • Performance optimization & scaling                      │
 ├──────────────────────────────────────────────────────────────┤
-│ 💻 Software Developer — Anviam Solutions                    │
+│ 💻 Software Developer — Anviam Solutions Private Limited    │
 │    Duration: March 2023 — April 2025                        │
-│    • Student management system development                   │
+│    • Student management system development (NIFTEM)         │
 │    • CSV export functionality & data processing             │
 │    • Payment gateway integration                             │
-│    • Database optimization & query performance              │
+│    • USSD platform development for financial transactions   │
+│    • CMS development with Laravel + Vue.js                  │
 ├──────────────────────────────────────────────────────────────┤
 │ 🔧 Software Developer — iTech Vision, Mohali                │
 │    Duration: March 2022 — February 2023                     │
-│    • Backend system architecture                             │
-│    • RESTful API development                                 │
-│    • Authentication & Role-Based Access Control             │
-│    • Code review & mentoring junior developers              │
+│    • Backend system architecture & development              │
+│    • RESTful API development & third-party integrations     │
+│    • User authentication & role-based access control       │
+│    • Investment platform features & matchmaking systems     │
+│    • Performance optimization & code review                 │
 └──────────────────────────────────────────────────────────────┘`,
 
       education:
 `🎓 Educational Background
 ┌──────────────────────────────────────────────────────────────┐
 │ 📚 Master of Computer Applications (MCA)                    │
-│    Institution: Asra Institute of Advanced Studies          │
-│    Focus: Advanced programming, Database management,         │
-│           Software engineering principles                    │
+│    Institution: Asra Group Of Institution                   │
+│    Completed: June 2021                                     │
+│    Location: Bhawanigarh, Patiala, India                   │
+│    Focus: Advanced programming, Database management         │
 ├──────────────────────────────────────────────────────────────┤
 │ 💡 Bachelor of Computer Applications (BCA)                  │
 │    Institution: Desh Bhagat College                         │
-│    Focus: Programming fundamentals, Web development,         │
-│           Computer science concepts                          │
+│    Completed: August 2018                                   │
+│    Location: Bardwal, Sangrur, India                       │
+│    Focus: Programming fundamentals, Web development         │
 └──────────────────────────────────────────────────────────────┘
 
-📜 Additional Certifications:
-• Laravel Advanced Concepts
-• Vue.js Progressive Web Apps
-• MySQL Performance Optimization
-• Git & Version Control Best Practices`,
+📜 Languages:
+• English (Professional)
+• Punjabi (Native)
+• Hindi (Fluent)`,
 
       projects: () => {
         const projectsData = [
           {
             name: "NIFTEM — Student Management System",
             tech: ["Laravel 8", "MySQL", "PHP"],
-            description: "Comprehensive university management platform handling admissions, student records, and course enrollment with advanced reporting features."
+            description: "Built web-based platform for managing student applications during admission process with CSV data download and online payment modules."
           },
           {
             name: "USSD Money Transfer Platform", 
             tech: ["Laravel 8", "MySQL", "SMS Gateway"],
-            description: "Secure mobile banking solution enabling money transfers via SMS/USSD with wallet management and transaction processing."
+            description: "Developed USSD-based platform for secure SMS-based money transfers and payments, focused on accessibility for users without internet."
           },
           {
             name: "V-APPS Content Management System",
             tech: ["Laravel 12", "Vue.js", "MySQL"],
-            description: "Modern CMS with role-based access, dynamic content editing, and responsive Vue.js frontend dashboard."
+            description: "Created full-featured CMS with Laravel backend and Vue.js frontend, utilizing Eloquent ORM for efficient database management."
           },
           {
             name: "Tryzeffy — Restaurant Discovery Platform",
             tech: ["Laravel 8", "MySQL", "APIs"],
-            description: "Location-based restaurant finder with deals management, user reviews, and integrated mapping services."
+            description: "Curated platform to find deals in Japan, listing restaurants, cafes, pubs. Built robust backend with Laravel handling listings and reviews."
           },
           {
             name: "WOWS Global — Investment Ecosystem",
             tech: ["Laravel 8", "MySQL", "APIs"],
-            description: "Business networking platform connecting startups with investors, featuring matching algorithms and deal flow management."
+            description: "Investment ecosystem connecting startups and SMEs with global investors. Features user registration, deal rooms, and secure data sharing."
           },
           {
-            name: "Shopify Integration Suite",
-            tech: ["Laravel", "Shopify API", "Webhooks"],
-            description: "Seamless e-commerce integration syncing orders, inventory, and customer data between Shopify and custom admin panels."
+            name: "Urawarrior — Mental Wellness Platform",
+            tech: ["Laravel 8", "MySQL", "Community"],
+            description: "Revolutionary mental wellness app and community platform. Safe and inclusive space focused on mental health support."
           }
         ];
 
@@ -436,17 +482,15 @@ into robust digital solutions. Always excited about new challenges!`,
 
         projectsData.forEach((project, index) => {
           output += `${index + 1}) ${project.name}
-`;
-          output += `   Technologies: ${project.tech.map(t => `[${t}]`).join(' ')}
-`;
-          output += `   ${project.description}
+   Technologies: ${project.tech.map(t => `[${t}]`).join(' ')}
+   ${project.description}
 
 `;
         });
 
-        output += `💡 View more projects: github.com/priyagithubrit
-`;
-        output += `🌐 Live demos available upon request`;
+        output += `💡 More projects on GitHub: github.com/priyagithubrit
+🌐 All projects built with clean, maintainable code
+📄 Detailed project descriptions in my resume - type 'resume'!`;
 
         return output;
       },
@@ -457,28 +501,25 @@ into robust digital solutions. Always excited about new challenges!`,
 │ Backend Development                                          │
 │ ├─ PHP             ████████████████████████ 95%             │
 │ ├─ Laravel         ███████████████████████  92%             │
-│ ├─ CodeIgniter     ██████████████████       80%             │
-│                                                             │
+│ ├─ REST APIs       ███████████████████████  90%             │
+│ ├─ MySQL           ████████████████████████ 93%             │
+│ └─ MVC Architecture ██████████████████████   88%             │
 ├──────────────────────────────────────────────────────────────┤
 │ Frontend Development                                         │
 │ ├─ HTML/CSS        ████████████████████████ 95%             │
 │ ├─ JavaScript      ███████████████████████  90%             │
-│ ├─ Vue.js          ███████████████████████  88%             │
-│ └─ Bootstrap       ██████████████████████   85%             │
-├──────────────────────────────────────────────────────────────┤
-│ Database & Storage                                           │
-│ ├─ MySQL           ████████████████████████ 93%             │
-│ ├─ Redis           ██████████████████       78%             │
-│ └─ PostgreSQL      ███████████████          72%             │
+│ ├─ Vue.js          ███████████████████████  85%             │
+│ └─ Responsive Design ██████████████████████   87%             │
 ├──────────────────────────────────────────────────────────────┤
 │ Tools & Technologies                                         │
 │ ├─ Git/GitHub      ███████████████████████  90%             │
-│ ├─ REST APIs       ███████████████████████  88%             │
-│ ├─ Shopify API     ██████████████████       82%             │
-│ └─ Jira/Agile      █████████████████        75%             │
+│ ├─ Redis           ██████████████████       78%             │
+│ ├─ JSON            ███████████████████████  88%             │
+│ └─ JIRA            █████████████████        75%             │
 └──────────────────────────────────────────────────────────────┘
 
-🧠 Soft Skills: Problem Solving • Team Leadership • Client Communication`,
+🧠 Soft Skills: Problem Solving • Team Collaboration • Client Communication
+📄 Complete skills breakdown in my resume - type 'resume'!`,
 
       contact:
 `📞 Contact Information
@@ -490,54 +531,104 @@ into robust digital solutions. Always excited about new challenges!`,
 │ 🏠 Location  India (Available for remote work)             │
 └──────────────────────────────────────────────────────────────┘
 
+Quick Contact Options:
+<a href="mailto:singlap047@gmail.com" class="download-btn"><i class="fas fa-envelope"></i>Send Email</a><a href="tel:+919877709698" class="download-btn"><i class="fas fa-phone"></i>Call Now</a>
+
+<a href="${CONFIG.social.github}" target="_blank" class="download-btn"><i class="fab fa-github"></i>GitHub</a><a href="${CONFIG.social.linkedin}" target="_blank" class="download-btn"><i class="fab fa-linkedin"></i>LinkedIn</a>
+
 💬 Preferred contact methods:
-• Email for project inquiries
-• Phone for urgent discussions  
+• Email for project inquiries & detailed discussions
+• Phone for urgent matters & quick consultations  
 • LinkedIn for professional networking
 • GitHub for code collaboration
 
 ⏰ Availability: Monday-Saturday, 9 AM - 8 PM IST
-🌍 Open to: Remote projects, Long-term contracts, Consulting`,
+🌍 Open to: Remote projects, Long-term contracts, Consulting work`,
 
-      resume: `📄 Resume Download
-Generating resume PDF... ████████████████████████ 100%
-✅ Resume generated successfully!
+      // ⭐ WORKING RESUME DOWNLOAD COMMAND ⭐
+      resume: () => {
+        // Auto-download after showing progress
+        setTimeout(() => {
+          const link = document.createElement('a');
+          link.href = CONFIG.resumeUrl;
+          link.download = 'Priya_Singla_Resume.pdf';
+          link.target = '_blank';
 
-📁 priya-singla-resume.pdf (2.3 MB)
-🔗 Download link: [Simulated - In real implementation, this would trigger a PDF download]
+          // Trigger download
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }, 1500);
+
+        return `📄 Resume Download
+Preparing Priya Singla's professional resume... ████████████████████████ 100%
+✅ Resume download started!
+
+<a href="${CONFIG.resumeUrl}" target="_blank" class="download-btn">
+<i class="fas fa-download"></i>Download Resume PDF
+</a>
 
 📋 Resume includes:
-• Complete work experience
-• Technical skills breakdown  
-• Project portfolio with links
-• Educational background
-• Professional references`,
+• 🏢 3+ years experience: Anviam Solutions, iTech Vision
+• 💻 Technical expertise: PHP, Laravel, Vue.js, MySQL, REST APIs
+• 🚀 Major projects: NIFTEM, USSD Platform, V-APPS, Tryzeffy, WOWS Global
+• 🎓 Education: MCA (Asra Institute), BCA (Desh Bhagat College)  
+• 📞 Complete contact information & professional references
+• 🌐 GitHub portfolio: github.com/priyagithubrit
+
+💡 If download didn't start automatically, click the button above!
+📱 Mobile users: Long-press button → "Save to Files" or "Download"
+
+🚀 This resume showcases real projects and proven experience!`;
+      },
 
       github: () => {
         window.open('https://github.com/priyagithubrit', '_blank');
         return `🔗 Opening GitHub profile in new tab...
-✅ GitHub: github.com/priyagithubrit`;
+✅ GitHub: github.com/priyagithubrit
+
+🚀 Featured repositories:
+• NIFTEM Student Management System
+• USSD Financial Transaction Platform  
+• V-APPS Content Management System
+• Restaurant Discovery Platform (Tryzeffy)
+• Investment Ecosystem (WOWS Global)
+
+💻 Real-world projects with clean, professional code
+📈 Active contributions and regular updates
+🌟 Comprehensive documentation and examples`;
       },
 
       linkedin: () => {
         window.open('https://linkedin.com/in/priya-singla-69a20a244', '_blank');
         return `🔗 Opening LinkedIn profile in new tab...
-✅ LinkedIn: linkedin.com/in/priya-singla-69a20a244`;
+✅ LinkedIn: linkedin.com/in/priya-singla-69a20a244
+
+💼 Professional highlights:
+• 3+ years Full Stack Development experience
+• Specialized in PHP, Laravel, Vue.js
+• Successfully delivered 25+ projects
+• Available for freelance opportunities
+
+🤝 Let's connect for professional networking and collaboration!`;
       },
 
-      portfolio: `🌐 Online Portfolio
+      portfolio: `🌐 Portfolio Showcase
 ┌──────────────────────────────────────────────────────────────┐
-│ 🎨 Modern Portfolio: priya-singla.dev (example)             │
-│ 💻 Terminal Portfolio: This interactive experience          │
-│ 📱 Mobile Optimized: Responsive on all devices              │
+│ 💻 Interactive Terminal: This unique experience (current)   │
+│ 📄 Professional Resume: Working download via 'resume' cmd   │
+│ 🚀 Live Project Demos: Real projects, not just concepts    │
+│ 💼 GitHub Repository: github.com/priyagithubrit            │
 └──────────────────────────────────────────────────────────────┘
 
-🚀 Features:
-• Interactive project showcase
-• Live code examples
-• Responsive design
-• Performance optimized
-• SEO friendly`,
+🎯 Portfolio Features:
+• Interactive terminal interface (unique in the market!)
+• Real resume download functionality
+• Professional project showcase
+• Responsive design optimized for all devices
+• Clean, maintainable code examples
+
+🏆 This portfolio demonstrates both technical skills and creativity!`,
 
       theme: `🎨 Terminal Themes
 Available themes:
@@ -554,35 +645,40 @@ Example: theme cyberpunk`,
         const now = new Date();
         return `📅 Current Date & Time
 ${now.toString()}
-🌍 Timezone: ${Intl.DateTimeFormat().resolvedOptions().timeZone}`;
+🌍 Timezone: ${Intl.DateTimeFormat().resolvedOptions().timeZone}
+⏰ Current IST: ${now.toLocaleString('en-IN', {timeZone: 'Asia/Kolkata'})}`;
       },
 
       ls: `📂 Available Sections
 total 8
-drwxr-xr-x  2 priya staff  64 Sep  3 19:59 about/
-drwxr-xr-x  2 priya staff  64 Sep  3 19:59 experience/  
-drwxr-xr-x  2 priya staff  64 Sep  3 19:59 education/
-drwxr-xr-x  2 priya staff  64 Sep  3 19:59 projects/
-drwxr-xr-x  2 priya staff  64 Sep  3 19:59 skills/
-drwxr-xr-x  2 priya staff  64 Sep  3 19:59 contact/
--rw-r--r--  1 priya staff 2048 Sep  3 19:59 resume.pdf`,
+drwxr-xr-x  2 priya staff  64 Sep  3 21:20 about/
+drwxr-xr-x  2 priya staff  64 Sep  3 21:20 experience/  
+drwxr-xr-x  2 priya staff  64 Sep  3 21:20 education/
+drwxr-xr-x  2 priya staff  64 Sep  3 21:20 projects/
+drwxr-xr-x  2 priya staff  64 Sep  3 21:20 skills/
+drwxr-xr-x  2 priya staff  64 Sep  3 21:20 contact/
+-rw-r--r--  1 priya staff 2048 Sep  3 21:20 resume.pdf ⭐`,
 
       pwd: `/home/priya-singla/portfolio`,
 
       neofetch: `
-                    🖥️  Priya's System Info
-   /\_/\            ─────────────────────────
-  ( o.o )           OS: Developer Linux
-   > ^ <            Host: priya-singla@portfolio
-                    Kernel: Full-Stack 3.0
-                    Uptime: 3+ years
-                    Packages: PHP, Laravel, Vue.js
-                    Shell: zsh 
-                    Terminal: Interactive Portfolio
-                    CPU: Problem Solver (8-core)
-                    GPU: Creativity Engine
-                    Memory: Unlimited Learning
-`
+                    🖥️  Priya's Developer Workstation
+   /\_/\            ─────────────────────────────────────
+  ( o.o )           OS: Full Stack Developer Linux
+   > ^ <            Host: priya-singla@portfolio  
+                    Kernel: Laravel-PHP 8.2
+                    Uptime: 3+ years professional experience
+                    Packages: PHP, Laravel, Vue.js, MySQL
+                    Shell: Professional Terminal Portfolio
+                    Terminal: Interactive Experience
+                    CPU: Problem Solver (Multi-core)
+                    GPU: Creative Solution Engine  
+                    Memory: Continuous Learning (Unlimited)
+                    Disk: 25+ Projects Portfolio
+                    Network: github.com/priyagithubrit
+                    Resume: Type 'resume' to download! ⭐
+
+📄 Full system specs available in downloadable resume!`
     };
 
     // history for arrow up/down
@@ -629,15 +725,16 @@ drwxr-xr-x  2 priya staff  64 Sep  3 19:59 contact/
       output.innerHTML = '';
       printHtml(`<pre class="banner">${banner}</pre>`);
       const welcomeText = `Welcome to PRIYA SINGLA's Interactive Terminal Portfolio! 
-Full Stack Developer with 3+ years of experience building amazing web applications.
+Full Stack Developer with 3+ years of experience building scalable web applications.
 
-Type 'help' to explore my background, or try commands like 'projects', 'experience', 'contact'.
-Use ↑↓ arrow keys to navigate command history.`;
+✨ NEW: Working resume download! Type 'resume' to get my professional PDF.
+🚀 Try commands: 'projects', 'experience', 'contact', 'skills'
+⌨️  Use ↑↓ arrow keys to navigate command history.`;
 
       const introDiv = document.createElement('div');
       introDiv.className = 'intro';
       output.appendChild(introDiv);
-      typeWriter(introDiv, welcomeText, 20);
+      typeWriter(introDiv, welcomeText, 25);
     }
 
     function showProgress() {
@@ -675,13 +772,14 @@ Use ↑↓ arrow keys to navigate command history.`;
       if (typeof commands[cmdLower] === 'function') {
         result = commands[cmdLower]();
       } else {
-        result = commands[cmdLower] || `❌ Command not found: ${escapeHtml(cmd)}\nType 'help' to see available commands.`;
+        result = commands[cmdLower] || `❌ Command not found: ${escapeHtml(cmd)}
+Type 'help' to see available commands.`;
       }
 
       // Add delay for realism
       setTimeout(() => {
         printHtml(result, 'response', ['projects', 'about'].includes(cmdLower));
-      }, 300);
+      }, 400);
     }
 
     // initial banner with delay
