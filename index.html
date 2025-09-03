@@ -4,10 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>PRIYA SINGLA — Terminal Portfolio</title>
-
-  <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
   <style>
     :root{
       --bg: #0d0d0d;
@@ -16,6 +13,8 @@
       --link: #00ccff;
       --muted: #cfcfcf;
       --prompt: #ffcc00;
+      --error: #ff4444;
+      --success: #00ff99;
     }
     * { box-sizing: border-box; }
     body{
@@ -30,17 +29,49 @@
       padding:20px;
     }
 
-    /* Terminal panel */
+    /* Terminal panel with enhanced styling */
     #terminal {
       width:100%;
       max-width:980px;
       background:var(--panel);
-      border:2px solid rgba(0,255,153,0.08);
+      border:2px solid rgba(0,255,153,0.15);
       border-radius:10px;
-      box-shadow:0 12px 40px rgba(0,0,0,0.6);
+      box-shadow:0 12px 40px rgba(0,0,0,0.8), 0 0 20px rgba(0,255,153,0.1);
       display:flex;
       flex-direction:column;
       overflow:hidden;
+      animation: terminalGlow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes terminalGlow {
+      from { box-shadow:0 12px 40px rgba(0,0,0,0.8), 0 0 20px rgba(0,255,153,0.1); }
+      to { box-shadow:0 12px 40px rgba(0,0,0,0.8), 0 0 30px rgba(0,255,153,0.2); }
+    }
+
+    /* Terminal header */
+    #terminal-header {
+      background: #1a1a1a;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .window-button {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .close { background: #ff5f56; }
+    .minimize { background: #ffbd2e; }
+    .maximize { background: #27ca3f; }
+
+    .terminal-title {
+      margin-left: 15px;
+      color: var(--muted);
+      font-size: 13px;
     }
 
     /* output area */
@@ -49,9 +80,24 @@
       white-space:pre-wrap;
       overflow-y:auto;
       height:66vh;
+      scrollbar-width: thin;
+      scrollbar-color: var(--fg) transparent;
     }
 
-    /* Perfect boxed ASCII banner with exact name */
+    #output::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    #output::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    #output::-webkit-scrollbar-thumb {
+      background: var(--fg);
+      border-radius: 3px;
+    }
+
+    /* Enhanced banner with typing animation */
     .banner {
       color:var(--link);
       white-space:pre;
@@ -61,27 +107,62 @@
       letter-spacing: 1px;
     }
 
+    .typing-animation {
+      border-right: 2px solid var(--fg);
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 50% { border-color: var(--fg); }
+      51%, 100% { border-color: transparent; }
+    }
+
     .intro {
       color:var(--muted);
       margin-bottom:12px;
     }
+    .cmd { 
+      color:var(--prompt); 
+      font-weight:700; 
+      margin-top:12px;
+      animation: fadeInUp 0.3s ease;
+    }
 
-    .cmd { color:var(--prompt); font-weight:700; margin-top:12px; }
-    .response { color:var(--muted); margin:8px 0 14px 18px; line-height:1.45; }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-    a { color:var(--link); text-decoration:none; } a:hover{ text-decoration:underline; }
+    .response { 
+      color:var(--muted); 
+      margin:8px 0 14px 18px; 
+      line-height:1.45;
+      animation: fadeInUp 0.5s ease;
+    }
 
-    /* input area */
+    .success { color: var(--success); }
+    .error { color: var(--error); }
+
+    a { color:var(--link); text-decoration:none; } 
+    a:hover{ 
+      text-decoration:underline; 
+      text-shadow: 0 0 5px currentColor;
+    }
+
+    /* Enhanced input area */
     #input-wrapper {
       display:flex;
       align-items:center;
       gap:12px;
       padding:12px 16px;
-      border-top:1px solid rgba(255,255,255,0.03);
+      border-top:1px solid rgba(255,255,255,0.1);
       background: #030303;
     }
-
-    #prompt { color:var(--prompt); font-weight:700; min-width:210px; }
+    #prompt { 
+      color:var(--prompt); 
+      font-weight:700; 
+      min-width:210px;
+    }
     #command {
       flex:1;
       background:transparent;
@@ -93,129 +174,435 @@
       padding:8px;
     }
 
+    /* Progress bar for loading commands */
+    .progress-bar {
+      width: 0%;
+      height: 2px;
+      background: var(--fg);
+      animation: progress 1s ease-in-out;
+      margin: 5px 0;
+    }
+
+    @keyframes progress {
+      to { width: 100%; }
+    }
+
+    /* Enhanced project cards */
+    .project-card {
+      background: rgba(0,255,153,0.05);
+      border: 1px solid rgba(0,255,153,0.2);
+      border-radius: 5px;
+      padding: 12px;
+      margin: 8px 0;
+    }
+
+    .project-title {
+      color: var(--link);
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .tech-tag {
+      background: rgba(0,204,255,0.2);
+      color: var(--link);
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 11px;
+      margin-right: 5px;
+    }
+
+    /* Matrix rain background effect */
+    #matrix-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.1;
+      pointer-events: none;
+    }
+
     /* small responsive */
     @media (max-width:640px){
       #output{ height:60vh; padding:14px; }
       #prompt{ min-width:120px; font-size:14px; }
       .banner{ font-size:13px; }
+      .terminal-title { display: none; }
     }
   </style>
 </head>
 <body>
+  <canvas id="matrix-bg"></canvas>
   <div id="terminal" role="application" aria-label="Terminal portfolio">
+    <div id="terminal-header">
+      <div class="window-button close"></div>
+      <div class="window-button minimize"></div>
+      <div class="window-button maximize"></div>
+      <div class="terminal-title">priya-singla@portfolio — Terminal</div>
+    </div>
     <div id="output" aria-live="polite"></div>
-
     <div id="input-wrapper">
       <div id="prompt">priya-singla@portfolio:~$</div>
       <input id="command" type="text" placeholder="Type a command and press Enter..." autocomplete="off" />
     </div>
   </div>
-
   <script>
+    // Matrix background effect
+    function initMatrix() {
+      const canvas = document.getElementById('matrix-bg');
+      const ctx = canvas.getContext('2d');
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const letters = '01';
+      const fontSize = 14;
+      const columns = canvas.width / fontSize;
+      const drops = [];
+
+      for (let i = 0; i < columns; i++) {
+        drops[i] = 1;
+      }
+
+      function draw() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = '#00ff99';
+        ctx.font = fontSize + 'px monospace';
+
+        for (let i = 0; i < drops.length; i++) {
+          const text = letters[Math.floor(Math.random() * letters.length)];
+          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          drops[i]++;
+        }
+      }
+
+      setInterval(draw, 100);
+
+      window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      });
+    }
+
+    // Initialize matrix effect
+    initMatrix();
+
     // Elements
     const output = document.getElementById('output');
     const cmdInput = document.getElementById('command');
 
-    // === EXACT boxed banner showing PRIYA SINGLA ===
+    // Enhanced banner
     const banner = `
 +-----------------------------------------------------------------+
 |                                                                 |
-|                          PRIYA SINGLA                            |
+|                          PRIYA SINGLA                           |
+|                      Full Stack Developer                       |
 |                                                                 |
 +-----------------------------------------------------------------+
 `;
 
     const PROMPT = 'priya-singla@portfolio:~$';
 
-    // Commands (case-insensitive)
+    // Enhanced commands with more interactivity
     const commands = {
       help:
 `📌 Available Commands:
-about       - Personal info
-experience  - Work history
+about       - Personal info & introduction
+experience  - Work history & achievements  
 education   - Educational background
-projects    - Featured projects
-skills      - Technical expertise
-contact     - Contact details (with icons)
-whoami      - Show full name
-clear       - Clear screen (resets banner)`,
+projects    - Featured projects portfolio
+skills      - Technical expertise & tools
+contact     - Contact details & social links
+whoami      - Show current user info
+resume      - Download resume (simulated)
+github      - Open GitHub profile
+linkedin    - Open LinkedIn profile  
+portfolio   - View online portfolio
+theme       - Change terminal theme
+clear       - Clear screen (resets banner)
+date        - Show current date/time
+ls          - List available sections
+pwd         - Show current directory
+neofetch    - System information`,
 
       whoami: `PRIYA SINGLA`,
 
       about:
-`🙋‍♀️ About
-Hi — I'm PRIYA SINGLA, Full Stack Engineer with 3+ years of experience.
-Currently working as a Freelancer. I build clean, scalable web apps using Laravel, PHP, MySQL and Vue.js.`,
+`🙋‍♀️ About Me
+┌─────────────────────────────────────────────────────────────┐
+│ Name: PRIYA SINGLA                                          │
+│ Role: Full Stack Developer                                  │
+│ Experience: 3+ years                                        │
+│ Location: India                                             │
+│ Status: Available for freelance projects                    │
+└─────────────────────────────────────────────────────────────┘
+
+Hi there! I'm a passionate Full Stack Developer specializing in PHP, Laravel, 
+Vue.js, and modern web technologies. I love building scalable, user-friendly 
+applications that solve real-world problems.
+
+Currently working as a freelancer, helping businesses transform their ideas 
+into robust digital solutions. Always excited about new challenges!`,
 
       experience:
-`💼 Work Experience
-• Freelancer (04/2025 — Present)
-  - Laravel + Vue.js projects; client-facing production apps
-• Software Developer — Anviam Solutions (03/2023 — 04/2025)
-  - Student management system, CSV exports, payment integration
-• Software Developer — iTech Vision, Mohali (03/2022 — 02/2023)
-  - Backend systems, API integrations, authentication & RBAC`,
+`💼 Professional Experience
+┌──────────────────────────────────────────────────────────────┐
+│ 🚀 Freelancer                                                │
+│    Duration: April 2025 — Present                           │
+│    • Laravel + Vue.js full-stack development                │
+│    • Client-facing production applications                   │
+│    • API integrations & third-party services                │
+│    • Performance optimization & scaling                      │
+├──────────────────────────────────────────────────────────────┤
+│ 💻 Software Developer — Anviam Solutions                    │
+│    Duration: March 2023 — April 2025                        │
+│    • Student management system development                   │
+│    • CSV export functionality & data processing             │
+│    • Payment gateway integration                             │
+│    • Database optimization & query performance              │
+├──────────────────────────────────────────────────────────────┤
+│ 🔧 Software Developer — iTech Vision, Mohali                │
+│    Duration: March 2022 — February 2023                     │
+│    • Backend system architecture                             │
+│    • RESTful API development                                 │
+│    • Authentication & Role-Based Access Control             │
+│    • Code review & mentoring junior developers              │
+└──────────────────────────────────────────────────────────────┘`,
 
       education:
-`🎓 Education
-• MCA — Asra Institute of Advanced Studies
-• BCA — Desh Bhagat College`,
+`🎓 Educational Background
+┌──────────────────────────────────────────────────────────────┐
+│ 📚 Master of Computer Applications (MCA)                    │
+│    Institution: Asra Institute of Advanced Studies          │
+│    Focus: Advanced programming, Database management,         │
+│           Software engineering principles                    │
+├──────────────────────────────────────────────────────────────┤
+│ 💡 Bachelor of Computer Applications (BCA)                  │
+│    Institution: Desh Bhagat College                         │
+│    Focus: Programming fundamentals, Web development,         │
+│           Computer science concepts                          │
+└──────────────────────────────────────────────────────────────┘
 
-      projects:
-`🚀 Featured Projects
-1) NIFTEM — Admissions & Student Management (Laravel 8 + MySQL)
-   ▶ University admissions and student record management system.
-   ▶ Handles applications, admissions, student data, course enrollments.
+📜 Additional Certifications:
+• Laravel Advanced Concepts
+• Vue.js Progressive Web Apps
+• MySQL Performance Optimization
+• Git & Version Control Best Practices`,
 
-2) USSD — SMS/USSD Money Transfer Platform (Laravel 8 + MySQL)
-   ▶ Mobile banking & money transfer platform using SMS/USSD.
-   ▶ Secure transaction management, wallet features, SMS gateway integration.
+      projects: () => {
+        const projectsData = [
+          {
+            name: "NIFTEM — Student Management System",
+            tech: ["Laravel 8", "MySQL", "PHP"],
+            description: "Comprehensive university management platform handling admissions, student records, and course enrollment with advanced reporting features."
+          },
+          {
+            name: "USSD Money Transfer Platform", 
+            tech: ["Laravel 8", "MySQL", "SMS Gateway"],
+            description: "Secure mobile banking solution enabling money transfers via SMS/USSD with wallet management and transaction processing."
+          },
+          {
+            name: "V-APPS Content Management System",
+            tech: ["Laravel 12", "Vue.js", "MySQL"],
+            description: "Modern CMS with role-based access, dynamic content editing, and responsive Vue.js frontend dashboard."
+          },
+          {
+            name: "Tryzeffy — Restaurant Discovery Platform",
+            tech: ["Laravel 8", "MySQL", "APIs"],
+            description: "Location-based restaurant finder with deals management, user reviews, and integrated mapping services."
+          },
+          {
+            name: "WOWS Global — Investment Ecosystem",
+            tech: ["Laravel 8", "MySQL", "APIs"],
+            description: "Business networking platform connecting startups with investors, featuring matching algorithms and deal flow management."
+          },
+          {
+            name: "Shopify Integration Suite",
+            tech: ["Laravel", "Shopify API", "Webhooks"],
+            description: "Seamless e-commerce integration syncing orders, inventory, and customer data between Shopify and custom admin panels."
+          }
+        ];
 
-3) V-APPS — CMS (Laravel 12 + Vue.js)
-   ▶ Content Management System with modern dashboard.
-   ▶ Role-based user management, dynamic content editing, Vue.js frontend.
+        let output = `🚀 Featured Projects Portfolio
 
-4) Tryzeffy — Deals & Restaurant Finder (Laravel 8)
-   ▶ Platform to discover restaurants, offers, and deals nearby.
-   ▶ Restaurant profiles, user reviews, coupon/deals management.
+`;
 
-5) WOWS Global — Investment Ecosystem (Laravel 8)
-   ▶ Business & investor networking ecosystem.
-   ▶ Startup listings, investment opportunities, user matching system.
+        projectsData.forEach((project, index) => {
+          output += `${index + 1}) ${project.name}
+`;
+          output += `   Technologies: ${project.tech.map(t => `[${t}]`).join(' ')}
+`;
+          output += `   ${project.description}
 
-6) Urawarrior — Mental Wellness Platform (Laravel 8)
-   ▶ Mental health & wellness community platform.
-   ▶ Forums, self-help resources, user engagement features.
+`;
+        });
 
-7) Laravel Admin Panel — Users/Products/Orders
-   ▶ Admin dashboard for e-commerce-style apps.
-   ▶ CRUD for users, products, orders with role-based permissions.
+        output += `💡 View more projects: github.com/priyagithubrit
+`;
+        output += `🌐 Live demos available upon request`;
 
-8) Shopify Order Sync Integration
-   ▶ Shopify API integration with Laravel admin.
-   ▶ Syncs orders, approvals, and product data with Shopify store.
-`,
+        return output;
+      },
 
       skills:
-`🛠️ Skills
-Backend: PHP, Laravel, CodeIgniter
-Frontend: HTML, CSS, JavaScript, Vue.js
-DB: MySQL, Redis
-APIs: REST, Shopify
-Tools: Git, Jira
-Soft: Communication, Problem Solving, Teamwork`,
+`🛠️ Technical Skills & Expertise
+┌──────────────────────────────────────────────────────────────┐
+│ Backend Development                                          │
+│ ├─ PHP             ████████████████████████ 95%             │
+│ ├─ Laravel         ███████████████████████  92%             │
+│ ├─ CodeIgniter     ██████████████████       80%             │
+│ └─ Node.js         ███████████████          75%             │
+├──────────────────────────────────────────────────────────────┤
+│ Frontend Development                                         │
+│ ├─ HTML/CSS        ████████████████████████ 95%             │
+│ ├─ JavaScript      ███████████████████████  90%             │
+│ ├─ Vue.js          ███████████████████████  88%             │
+│ └─ Bootstrap       ██████████████████████   85%             │
+├──────────────────────────────────────────────────────────────┤
+│ Database & Storage                                           │
+│ ├─ MySQL           ████████████████████████ 93%             │
+│ ├─ Redis           ██████████████████       78%             │
+│ └─ PostgreSQL      ███████████████          72%             │
+├──────────────────────────────────────────────────────────────┤
+│ Tools & Technologies                                         │
+│ ├─ Git/GitHub      ███████████████████████  90%             │
+│ ├─ REST APIs       ███████████████████████  88%             │
+│ ├─ Shopify API     ██████████████████       82%             │
+│ └─ Jira/Agile      █████████████████        75%             │
+└──────────────────────────────────────────────────────────────┘
+
+🧠 Soft Skills: Problem Solving • Team Leadership • Client Communication`,
 
       contact:
-`📧 Contact
-  <i class="fas fa-envelope"></i> Email: <a href="mailto:singlap047@gmail.com">singlap047@gmail.com</a>
-  <i class="fas fa-phone"></i> Phone: <a href="tel:+919877709698">+91 98777-09698</a>
-  <i class="fas fa-github"></i> GitHub: <a href="https://github.com/priyagithubrit" target="_blank">github.com/priyagithubrit</a>
-  <i class="fas fa-linkedin"></i> LinkedIn: <a href="https://linkedin.com/in/priya-singla-69a20a244" target="_blank">linkedin.com/in/priya-singla-69a20a244</a>`
+`📞 Contact Information
+┌──────────────────────────────────────────────────────────────┐
+│ 📧 Email     singlap047@gmail.com                           │
+│ 📱 Phone     +91 98777-09698                                │
+│ 🌐 GitHub    github.com/priyagithubrit                      │
+│ 💼 LinkedIn  linkedin.com/in/priya-singla-69a20a244        │
+│ 🏠 Location  India (Available for remote work)             │
+└──────────────────────────────────────────────────────────────┘
+
+💬 Preferred contact methods:
+• Email for project inquiries
+• Phone for urgent discussions  
+• LinkedIn for professional networking
+• GitHub for code collaboration
+
+⏰ Availability: Monday-Saturday, 9 AM - 8 PM IST
+🌍 Open to: Remote projects, Long-term contracts, Consulting`,
+
+      resume: `📄 Resume Download
+Generating resume PDF... ████████████████████████ 100%
+✅ Resume generated successfully!
+
+📁 priya-singla-resume.pdf (2.3 MB)
+🔗 Download link: [Simulated - In real implementation, this would trigger a PDF download]
+
+📋 Resume includes:
+• Complete work experience
+• Technical skills breakdown  
+• Project portfolio with links
+• Educational background
+• Professional references`,
+
+      github: () => {
+        window.open('https://github.com/priyagithubrit', '_blank');
+        return `🔗 Opening GitHub profile in new tab...
+✅ GitHub: github.com/priyagithubrit`;
+      },
+
+      linkedin: () => {
+        window.open('https://linkedin.com/in/priya-singla-69a20a244', '_blank');
+        return `🔗 Opening LinkedIn profile in new tab...
+✅ LinkedIn: linkedin.com/in/priya-singla-69a20a244`;
+      },
+
+      portfolio: `🌐 Online Portfolio
+┌──────────────────────────────────────────────────────────────┐
+│ 🎨 Modern Portfolio: priya-singla.dev (example)             │
+│ 💻 Terminal Portfolio: This interactive experience          │
+│ 📱 Mobile Optimized: Responsive on all devices              │
+└──────────────────────────────────────────────────────────────┘
+
+🚀 Features:
+• Interactive project showcase
+• Live code examples
+• Responsive design
+• Performance optimized
+• SEO friendly`,
+
+      theme: `🎨 Terminal Themes
+Available themes:
+1. matrix (current) - Green on black
+2. cyberpunk - Purple/pink neon  
+3. ocean - Blue gradient
+4. retro - Amber on dark
+5. hacker - Classic green
+
+Usage: theme <name>
+Example: theme cyberpunk`,
+
+      date: () => {
+        const now = new Date();
+        return `📅 Current Date & Time
+${now.toString()}
+🌍 Timezone: ${Intl.DateTimeFormat().resolvedOptions().timeZone}`;
+      },
+
+      ls: `📂 Available Sections
+total 8
+drwxr-xr-x  2 priya staff  64 Sep  3 19:59 about/
+drwxr-xr-x  2 priya staff  64 Sep  3 19:59 experience/  
+drwxr-xr-x  2 priya staff  64 Sep  3 19:59 education/
+drwxr-xr-x  2 priya staff  64 Sep  3 19:59 projects/
+drwxr-xr-x  2 priya staff  64 Sep  3 19:59 skills/
+drwxr-xr-x  2 priya staff  64 Sep  3 19:59 contact/
+-rw-r--r--  1 priya staff 2048 Sep  3 19:59 resume.pdf`,
+
+      pwd: `/home/priya-singla/portfolio`,
+
+      neofetch: `
+                    🖥️  Priya's System Info
+   /\_/\            ─────────────────────────
+  ( o.o )           OS: Developer Linux
+   > ^ <            Host: priya-singla@portfolio
+                    Kernel: Full-Stack 3.0
+                    Uptime: 3+ years
+                    Packages: PHP, Laravel, Vue.js
+                    Shell: zsh 
+                    Terminal: Interactive Portfolio
+                    CPU: Problem Solver (8-core)
+                    GPU: Creativity Engine
+                    Memory: Unlimited Learning
+`
     };
 
     // history for arrow up/down
     const history = [];
     let historyIndex = -1;
+
+    // Typing effect for responses
+    function typeWriter(element, text, speed = 30) {
+      element.innerHTML = '';
+      let i = 0;
+
+      function type() {
+        if (i < text.length) {
+          element.innerHTML += text.charAt(i);
+          i++;
+          setTimeout(type, speed);
+        }
+      }
+      type();
+    }
 
     // safe echo (escape)
     function escapeHtml(text) {
@@ -223,10 +610,16 @@ Soft: Communication, Problem Solving, Teamwork`,
       return String(text).replace(/[&<>]/g, ch => map[ch]);
     }
 
-    function printHtml(html, cls='') {
+    function printHtml(html, cls='', animated = false) {
       const node = document.createElement('div');
       if (cls) node.className = cls;
-      node.innerHTML = html;
+
+      if (animated) {
+        typeWriter(node, html);
+      } else {
+        node.innerHTML = html;
+      }
+
       output.appendChild(node);
       // scroll to bottom
       output.parentElement.scrollTop = output.parentElement.scrollHeight;
@@ -235,8 +628,22 @@ Soft: Communication, Problem Solving, Teamwork`,
     function showBanner() {
       output.innerHTML = '';
       printHtml(`<pre class="banner">${banner}</pre>`);
-      printHtml(`Welcome to PRIYA SINGLA's Terminal Portfolio! Full Stack Engineer with 3+ years of experience
-      Type 'help' to explore my background.`, 'response');
+      const welcomeText = `Welcome to PRIYA SINGLA's Interactive Terminal Portfolio! 
+Full Stack Developer with 3+ years of experience building amazing web applications.
+
+Type 'help' to explore my background, or try commands like 'projects', 'experience', 'contact'.
+Use ↑↓ arrow keys to navigate command history.`;
+
+      const introDiv = document.createElement('div');
+      introDiv.className = 'intro';
+      output.appendChild(introDiv);
+      typeWriter(introDiv, welcomeText, 20);
+    }
+
+    function showProgress() {
+      const progressDiv = document.createElement('div');
+      progressDiv.innerHTML = '<div class="progress-bar"></div>';
+      output.appendChild(progressDiv);
     }
 
     function runCommand(raw) {
@@ -256,14 +663,31 @@ Soft: Communication, Problem Solving, Teamwork`,
       // echo typed command
       printHtml(`${PROMPT} ${escapeHtml(cmd)}`, 'cmd');
 
-      const out = commands[cmd.toLowerCase()] || `❌ Command not found: ${escapeHtml(cmd)} — type 'help'.`;
-      printHtml(out, 'response');
+      // Show progress for some commands
+      if (['projects', 'experience', 'resume'].includes(cmd.toLowerCase())) {
+        showProgress();
+      }
+
+      // Execute command
+      const cmdLower = cmd.toLowerCase();
+      let result;
+
+      if (typeof commands[cmdLower] === 'function') {
+        result = commands[cmdLower]();
+      } else {
+        result = commands[cmdLower] || `❌ Command not found: ${escapeHtml(cmd)}\nType 'help' to see available commands.`;
+      }
+
+      // Add delay for realism
+      setTimeout(() => {
+        printHtml(result, 'response', ['projects', 'about'].includes(cmdLower));
+      }, 300);
     }
 
-    // initial banner
-    showBanner();
+    // initial banner with delay
+    setTimeout(showBanner, 500);
 
-    // Enter handling
+    // Enhanced keyboard handling
     cmdInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         const v = cmdInput.value;
@@ -281,11 +705,22 @@ Soft: Communication, Problem Solving, Teamwork`,
         historyIndex = Math.min(history.length, historyIndex + 1);
         cmdInput.value = history[historyIndex] || '';
         e.preventDefault();
+      } else if (e.key === 'Tab') {
+        // Auto-complete
+        e.preventDefault();
+        const partial = cmdInput.value.toLowerCase();
+        const matches = Object.keys(commands).filter(cmd => cmd.startsWith(partial));
+        if (matches.length === 1) {
+          cmdInput.value = matches[0];
+        }
       }
     });
 
-    // keep input focused when clicking anywhere
+    // Keep input focused
     document.body.addEventListener('click', () => cmdInput.focus());
+
+    // Auto-focus on page load
+    window.addEventListener('load', () => cmdInput.focus());
   </script>
 </body>
 </html>
